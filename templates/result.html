@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoga Pose Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        h1 {
+            color: #2E8B57;
+        }
+        img {
+            max-width: 50%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Predicted Pose: {{ pose }}</h1>
+
+    {% if image_url %}
+        <img src="{{ image_url }}" alt="Uploaded Yoga Pose">
+    {% endif %}
+
+    <br>
+    <button onclick="window.location.href='/'">Start Real-Time Correction</button>
+</body>
+</html>

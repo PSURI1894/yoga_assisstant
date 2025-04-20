@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoga Pose Correction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #74ebd5, #ACB6E5);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            animation: bgAnimation 10s infinite alternate;
+        }
+
+        @keyframes bgAnimation {
+            0% { background: linear-gradient(45deg, #74ebd5, #ACB6E5); }
+            100% { background: linear-gradient(45deg, #ACB6E5, #74ebd5); }
+        }
+
+        h1 {
+            color: #2C3E50;
+            font-size: 40px;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Form Styling */
+        form {
+            background: white;
+            padding: 20px;
+            width: 50%;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+            transform: perspective(500px) rotateX(10deg);
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            font-size: 16px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #3498DB;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            background-color: #2C3E50;
+            transform: scale(1.05);
+        }
+
+        /* Container Styling */
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .box {
+            width: 45%;
+            text-align: center;
+            margin: 10px;
+            transform: perspective(500px) rotateY(5deg);
+        }
+
+        img {
+            width: 100%;
+            max-height: 300px;
+            border: 3px solid #2C3E50;
+            border-radius: 8px;
+            object-fit: contain;
+            padding: 5px;
+            background: #ECF0F1;
+            transition: transform 0.3s;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Feedback Styling */
+        .feedback {
+            font-size: 18px;
+            font-weight: bold;
+            color: #E74C3C;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Video Background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* YouTube Videos */
+        .video-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 40px auto;
+        }
+
+        .video-section iframe {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <video class="video-bg" autoplay loop muted>
+        <source src="background.mp4" type="video/mp4">
+    </video>
+
+    <h1>Yoga Pose Correction</h1>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="fileUpload">Upload Pose:</label>
+        <input type="file" id="fileUpload" name="file" title="Choose a file to upload" placeholder="Choose a file">
+        <button type="submit">Upload</button>
+    </form>
+
+    <div class="container">
+        <div class="box">
+            <h2 style="color: #2C3E50;">Target Pose</h2>
+            <img id="uploadedImage" src="{{ url_for('uploaded_file', filename='latest_pose.jpg') }}" alt="Uploaded Pose">
+        </div>
+        <div class="box">
+            <h2 style="color: #2C3E50;">Your Live Pose</h2>
+            <img id="videoFeed" src="{{ url_for('video_feed') }}" alt="Live Video Feed">
+            <div class="feedback" id="feedbackText">Waiting for feedback...</div>
+        </div>
+    </div>
+
+    <div class="video-section">
+        <iframe src="https://www.youtube.com/embed/v7AYKMP6rOE" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/_wJtQmOT9vY" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/oBu-pQG6sTY" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/dy_FGG6IJGo" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        setInterval(() => {
+            fetch('/get_feedback')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("feedbackText").textContent = data.feedback;
+                });
+        }, 1000);
+    </script>
+</body>
+</html>
